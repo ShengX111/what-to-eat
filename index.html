@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今天吃啥？🎰</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid #333;
+            position: relative;
+            transition: transform 3s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            overflow: hidden;
+        }
+        
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .wheel-segment span {
+            position: absolute;
+            left: 60%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            white-space: nowrap;
+        }
+        
+        .pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #ff4757;
+            z-index: 10;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            border: 4px solid #333;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 15px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .result {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result-emoji {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .result-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .result-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .result-score {
+            color: #ff9f43;
+            font-weight: bold;
+        }
+        
+        .history {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+        }
+        
+        .history-title {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        .history-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .step.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .step.completed {
+            background: #2ed573;
+            color: white;
+        }
+        
+        .info {
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎰 今天吃啥？</h1>
+        <p class="subtitle">中关村国际孵化园附近 · 评分 4.5+ 精选</p>
+        
+        <div class="step-indicator">
+            <div class="step active" id="step1">1</div>
+            <div class="step" id="step2">2</div>
+        </div>
+        
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <div class="wheel" id="wheel"></div>
+            <div class="center-circle" id="centerEmoji">🍽️</div>
+        </div>
+        
+        <button class="btn" id="spinBtn" onclick="spinWheel()">开始选择</button>
+        <button class="btn btn-secondary" id="resetBtn" onclick="resetSelection()" style="display: none;">重新选择</button>
+        
+        <div class="result" id="result">
+            <div class="result-emoji" id="resultEmoji">🎉</div>
+            <div class="result-title" id="resultTitle">选中分类</div>
+            <div class="result-name" id="resultName"></div>
+            <div class="result-score" id="resultScore"></div>
+        </div>
+        
+        <div class="history" id="history">
+            <div class="history-title">📜 最近选择记录</div>
+            <div id="historyList"></div>
+        </div>
+        
+        <p class="info">💡 最近 3 次选择的餐厅不会重复出现</p>
+    </div>
+
+    <script>
+        // 餐厅数据 - 中关村国际孵化园附近 5 公里，评分 4.5+
+        const restaurantData = {
+            "川菜": [
+                { name: "椒塘·中国菜", score: 4.9, emoji: "🌶️" },
+                { name: "眉州东坡", score: 4.8, emoji: "🥘" },
+                { name: "绿茶餐厅", score: 4.8, emoji: "🍵" },
+                { name: "外婆家", score: 4.7, emoji: "👵" },
+                { name: "蜀大侠火锅", score: 4.7, emoji: "🍲" },
+                { name: "小龙坎火锅", score: 4.7, emoji: "🐉" },
+                { name: "陈麻婆豆腐", score: 4.6, emoji: "🍛" },
+                { name: "川渝人家", score: 4.6, emoji: "🏠" },
+                { name: "辣府火锅", score: 4.6, emoji: "🔥" },
+                { name: "蜀九香火锅", score: 4.6, emoji: "🍢" },
+                { name: "宽板凳火锅", score: 4.5, emoji: "🪑" },
+                { name: "蜀国演义", score: 4.5, emoji: "🎭" },
+                { name: "巴蜀传香", score: 4.5, emoji: "🌺" },
+                { name: "渝信川菜", score: 4.5, emoji: "📬" },
+                { name: "川办餐厅", score: 4.5, emoji: "🏢" },
+                { name: "小山娘川辣火锅", score: 4.8, emoji: "🍜" }
+            ],
+            "湘菜": [
+                { name: "人人湘", score: 4.8, emoji: "🍜" },
+                { name: "费大厨辣椒炒肉", score: 4.8, emoji: "🥩" },
+                { name: "炊烟小炒黄牛肉", score: 4.7, emoji: "🐂" },
+                { name: "壹盏灯", score: 4.7, emoji: "🏮" },
+                { name: "鲁哥饭店", score: 4.6, emoji: "👨" },
+                { name: "湘遇", score: 4.6, emoji: "🤝" },
+                { name: "潇湘阁", score: 4.6, emoji: "🏛️" },
+                { name: "湘菜馆", score: 4.5, emoji: "🍽️" },
+                { name: "湖南味道", score: 4.5, emoji: "🌶️" },
+                { name: "湘鄂情", score: 4.5, emoji: "💕" },
+                { name: "九头鸟酒家", score: 4.6, emoji: "🐦" },
+                { name: "上地宴", score: 4.7, emoji: "🎊" },
+                { name: "湘味堂", score: 4.5, emoji: "🏠" },
+                { name: "辣不怕", score: 4.5, emoji: "😎" },
+                { name: "湘聚楼", score: 4.5, emoji: "🏢" },
+                { name: "小城外婆肴", score: 4.7, emoji: "👵" }
+            ],
+            "日料": [
+                { name: "吉川谷谷·日料自助", score: 4.9, emoji: "🍣" },
+                { name: "将太无二", score: 4.8, emoji: "🥢" },
+                { name: "松屋", score: 4.7, emoji: "🏠" },
+                { name: "元气寿司", score: 4.7, emoji: "⚡" },
+                { name: "禾绿寿司", score: 4.6, emoji: "🌾" },
+                { name: "板前十胜", score: 4.6, emoji: "🏆" },
+                { name: "浅草屋", score: 4.6, emoji: "🌿" },
+                { name: "渔歌日料", score: 4.5, emoji: "🎵" },
+                { name: "樱寿司", score: 4.5, emoji: "🌸" },
+                { name: "东京料理", score: 4.5, emoji: "🗼" },
+                { name: "大渔铁板烧", score: 4.7, emoji: "🔥" },
+                { name: "千代田", score: 4.6, emoji: "⛩️" },
+                { name: "居酒屋", score: 4.5, emoji: "🏮" },
+                { name: "拉面道", score: 4.5, emoji: "🍜" },
+                { name: "寿司郎", score: 4.6, emoji: "🍱" },
+                { name: "天妇罗屋", score: 4.5, emoji: "🍤" }
+            ],
+            "火锅": [
+                { name: "海底捞", score: 4.8, emoji: "🌊" },
+                { name: "呷哺呷哺", score: 4.6, emoji: "🍲" },
+                { name: "大龙燚火锅", score: 4.7, emoji: "🔥" },
+                { name: "凑凑火锅", score: 4.7, emoji: "🥘" },
+                { name: "谭鸭血火锅", score: 4.6, emoji: "🦆" },
+                { name: "珮姐老火锅", score: 4.6, emoji: "👵" },
+                { name: "刘一手火锅", score: 4.5, emoji: "✋" },
+                { name: "德庄火锅", score: 4.5, emoji: "⛰️" },
+                { name: "小天鹅火锅", score: 4.5, emoji: "🦢" },
+                { name: "秦妈火锅", score: 4.5, emoji: "👩" },
+                { name: "老北京涮肉", score: 4.7, emoji: "🐑" },
+                { name: "东来顺", score: 4.6, emoji: "🏮" },
+                { name: "聚宝源", score: 4.7, emoji: "💰" },
+                { name: "南门涮肉", score: 4.6, emoji: "🚪" },
+                { name: "满福楼", score: 4.5, emoji: "🈵" },
+                { name: "羊大爷涮肉", score: 4.5, emoji: "👴" }
+            ],
+            "烧烤": [
+                { name: "木屋烧烤", score: 4.7, emoji: "🏠" },
+                { name: "丰茂烤串", score: 4.7, emoji: "🍢" },
+                { name: "很久以前羊肉串", score: 4.6, emoji: "⏰" },
+                { name: "冰城串吧", score: 4.6, emoji: "🧊" },
+                { name: "管氏翅吧", score: 4.5, emoji: "🍗" },
+                { name: "胡大饭馆", score: 4.7, emoji: "🦞" },
+                { name: "聚点串吧", score: 4.5, emoji: "🎯" },
+                { name: "野人串吧", score: 4.5, emoji: "🧔" },
+                { name: "烤匠", score: 4.6, emoji: "👨‍🍳" },
+                { name: "探鱼", score: 4.6, emoji: "🐟" },
+                { name: "江边城外", score: 4.5, emoji: "🌊" },
+                { name: "诸葛烤鱼", score: 4.5, emoji: "🧙" },
+                { name: "碳烤时代", score: 4.5, emoji: "⚫" },
+                { name: "串来串去", score: 4.5, emoji: "🔄" },
+                { name: "烤天下", score: 4.5, emoji: "🌍" },
+                { name: "酒场串吧", score: 4.6, emoji: "🍶" }
+            ],
+            "快餐简餐": [
+                { name: "喜家德水饺", score: 4.7, emoji: "🥟" },
+                { name: "东方饺子王", score: 4.6, emoji: "🥢" },
+                { name: "真功夫", score: 4.5, emoji: "💪" },
+                { name: "永和大王", score: 4.5, emoji: "👑" },
+                { name: "老乡鸡", score: 4.7, emoji: "🐔" },
+                { name: "大米先生", score: 4.6, emoji: "🍚" },
+                { name: "乡村基", score: 4.5, emoji: "🏡" },
+                { name: "老娘舅", score: 4.5, emoji: "👨" },
+                { name: "吉祥馄饨", score: 4.5, emoji: "🥣" },
+                { name: "庆丰包子铺", score: 4.5, emoji: "🥠" },
+                { name: "和府捞面", score: 4.7, emoji: "🍜" },
+                { name: "马记永", score: 4.6, emoji: "🐎" },
+                { name: "陈香贵", score: 4.6, emoji: "💎" },
+                { name: "张拉拉", score: 4.5, emoji: "🎵" },
+                { name: "遇见小面", score: 4.5, emoji: "👋" },
+                { name: "五爷拌面", score: 4.5, emoji: "5️⃣" }
+            ],
+            "西餐": [
+                { name: "必胜客", score: 4.6, emoji: "🍕" },
+                { name: "肯德基", score: 4.5, emoji: "🍗" },
+                { name: "麦当劳", score: 4.5, emoji: "🍔" },
+                { name: "汉堡王", score: 4.5, emoji: "👑" },
+                { name: "赛百味", score: 4.5, emoji: "🥪" },
+                { name: "棒约翰", score: 4.6, emoji: "🍕" },
+                { name: "达美乐", score: 4.6, emoji: "📦" },
+                { name: "王品牛排", score: 4.7, emoji: "🥩" },
+                { name: "西堤牛排", score: 4.6, emoji: "🏖️" },
+                { name: "豪客来", score: 4.5, emoji: "🤠" },
+                { name: "绿茵阁", score: 4.5, emoji: "🌿" },
+                { name: "咖啡陪你", score: 4.5, emoji: "☕" },
+                { name: "意式餐厅", score: 4.5, emoji: "🇮🇹" },
+                { name: "法式小馆", score: 4.5, emoji: "🇫🇷" },
+                { name: "德式啤酒坊", score: 4.6, emoji: "🇩🇪" },
+                { name: "美式餐厅", score: 4.5, emoji: "🇺🇸" }
+            ],
+            "东南亚菜": [
+                { name: "太二酸菜鱼", score: 4.7, emoji: "🐟" },
+                { name: "椰香泰式", score: 4.6, emoji: "🥥" },
+                { name: "泰香米", score: 4.6, emoji: "🍚" },
+                { name: "迷你椰", score: 4.5, emoji: "🌴" },
+                { name: "青叶泰式", score: 4.5, emoji: "🍃" },
+                { name: "泰式小馆", score: 4.5, emoji: "🏠" },
+                { name: "越南河粉", score: 4.5, emoji: "🍜" },
+                { name: "新加坡菜", score: 4.5, emoji: "🇸🇬" },
+                { name: "马来风光", score: 4.5, emoji: "🇲🇾" },
+                { name: "印尼餐厅", score: 4.5, emoji: "🇮🇩" },
+                { name: "菲律宾菜", score: 4.5, emoji: "🇵🇭" },
+                { name: "柬埔寨菜", score: 4.5, emoji: "🇰🇭" },
+                { name: "缅甸餐厅", score: 4.5, emoji: "🇲🇲" },
+                { name: "老挝菜", score: 4.5, emoji: "🇱🇦" },
+                { name: "文莱风味", score: 4.5, emoji: "🇧🇳" },
+                { name: "东兴口岸", score: 4.5, emoji: "🚢" }
+            ]
+        };
+
+        let currentStep = 1;
+        let selectedCategory = null;
+        let history = [];
+        let isSpinning = false;
+
+        const colors = [
+            '#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', 
+            '#54a0ff', '#5f27cd', '#00d2d3', '#1dd1a1'
+        ];
+
+        function initWheel(items) {
+            const wheel = document.getElementById('wheel');
+            wheel.innerHTML = '';
+            const segmentAngle = 360 / items.length;
+            
+            items.forEach((item, index) => {
+                const segment = document.createElement('div');
+                segment.className = 'wheel-segment';
+                const rotation = index * segmentAngle - 45;
+                segment.style.transform = `rotate(${rotation}deg)`;
+                segment.style.background = colors[index % colors.length];
+                
+                const span = document.createElement('span');
+                span.textContent = item.name || item;
+                segment.appendChild(span);
+                
+                wheel.appendChild(segment);
+            });
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spinBtn');
+            spinBtn.disabled = true;
+            
+            // 计算旋转角度
+            const extraSpins = 5 + Math.random() * 5;
+            const randomAngle = Math.random() * 360;
+            const totalRotation = extraSpins * 360 + randomAngle;
+            
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+            
+            setTimeout(() => {
+                isSpinning = false;
+                spinBtn.disabled = false;
+                
+                // 计算选中的项目
+                const normalizedAngle = totalRotation % 360;
+                const items = currentStep === 1 ? Object.keys(restaurantData) : getAvailableRestaurants(selectedCategory);
+                const segmentAngle = 360 / items.length;
+                // 指针在顶部，需要调整计算
+                const selectedIndex = Math.floor(((360 - normalizedAngle + 90) % 360) / segmentAngle) % items.length;
+                
+                if (currentStep === 1) {
+                    selectedCategory = items[selectedIndex];
+                    showResult('category', selectedCategory);
+                    currentStep = 2;
+                    updateStepIndicator();
+                    initWheel(getAvailableRestaurants(selectedCategory));
+                    spinBtn.textContent = '选择餐厅';
+                } else {
+                    const restaurant = items[selectedIndex];
+                    showResult('restaurant', restaurant);
+                    addToHistory(restaurant, selectedCategory);
+                    spinBtn.textContent = '再来一次';
+                }
+            }, 3000);
+        }
+
+        function getAvailableRestaurants(category) {
+            const allRestaurants = restaurantData[category];
+            const lastThreeNames = history.slice(-3).map(h => h.name);
+            return allRestaurants.filter(r => !lastThreeNames.includes(r.name));
+        }
+
+        function showResult(type, item) {
+            const result = document.getElementById('result');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultName = document.getElementById('resultName');
+            const resultScore = document.getElementById('resultScore');
+            const resultEmoji = document.getElementById('resultEmoji');
+            const centerEmoji = document.getElementById('centerEmoji');
+            
+            result.classList.add('show');
+            
+            if (type === 'category') {
+                resultTitle.textContent = '🎯 选中分类';
+                resultName.textContent = item;
+                resultScore.textContent = '';
+                resultEmoji.textContent = '📁';
+                centerEmoji.textContent = '🍽️';
+            } else {
+                resultTitle.textContent = '🎉 今天吃这个！';
+                resultName.textContent = item.name;
+                resultScore.textContent = `⭐ ${item.score}分 ${item.emoji}`;
+                resultEmoji.textContent = '🎊';
+                centerEmoji.textContent = item.emoji;
+            }
+        }
+
+        function addToHistory(restaurant, category) {
+            history.push({ name: restaurant.name, category: category, score: restaurant.score });
+            if (history.length > 3) {
+                history.shift();
+            }
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = history.map((h, i) => 
+                `<div class="history-item">${i + 1}. ${h.category} · ${h.name} ⭐${h.score}</div>`
+            ).join('');
+        }
+
+        function updateStepIndicator() {
+            document.getElementById('step1').className = currentStep >= 1 ? 'step completed' : 'step';
+            document.getElementById('step2').className = currentStep >= 2 ? 'step active' : 'step';
+        }
+
+        function resetSelection() {
+            currentStep = 1;
+            selectedCategory = null;
+            updateStepIndicator();
+            initWheel(Object.keys(restaurantData));
+            document.getElementById('result').classList.remove('show');
+            document.getElementById('spinBtn').textContent = '开始选择';
+            document.getElementById('centerEmoji').textContent = '🍽️';
+        }
+
+        // 初始化
+        initWheel(Object.keys(restaurantData));
+    </script>
+</body>
+</html>
