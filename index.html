@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>吃嘛？🎰</title>
+    <title>吃了么？🎰</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -13,8 +13,8 @@
         }
         
         body {
-            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,89 +23,47 @@
             overflow-x: hidden;
         }
         
-        /* 赛博朋克背景动画 */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
-                    transparent 0px,
-                    transparent 2px,
-                    rgba(0, 255, 255, 0.03) 2px,
-                    rgba(0, 255, 255, 0.03) 4px
-                );
-            pointer-events: none;
-            z-index: 0;
-        }
-        
         .container {
-            background: rgba(15, 12, 41, 0.9);
-            border: 2px solid #00ffff;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 30px;
-            max-width: 500px;
+            max-width: 450px;
             width: 100%;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.5),
-                0 0 40px rgba(255, 0, 255, 0.3),
-                inset 0 0 20px rgba(0, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 1;
-            backdrop-filter: blur(10px);
         }
         
-        /* 霓虹灯效果标题 - 修改为暖色 */
         h1 {
             text-align: center;
-            color: #f47920;
+            color: #333;
             margin-bottom: 10px;
-            font-size: 36px;
-            text-shadow: 
-                0 0 10px #f47920,
-                0 0 20px #f47920,
-                0 0 40px #f47920,
-                0 0 80px #f47920;
-            animation: flicker 2s infinite;
-        }
-        
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-            52% { opacity: 1; }
-            54% { opacity: 0.9; }
+            font-size: 32px;
         }
         
         .subtitle {
             text-align: center;
-            color: #ff00ff;
-            margin-bottom: 30px;
+            color: #666;
+            margin-bottom: 25px;
             font-size: 14px;
-            text-shadow: 0 0 10px #ff00ff;
         }
         
         .wheel-container {
             position: relative;
-            width: 320px;
-            height: 320px;
-            margin: 0 auto 30px;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 25px;
         }
         
         .wheel {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 4px solid #00ffff;
+            border: 4px solid #333;
             position: relative;
             transition: transform 3s cubic-bezier(0.17, 0.67, 0.83, 0.67);
             overflow: hidden;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.5),
-                inset 0 0 20px rgba(0, 255, 255, 0.2);
+            background: #fff;
         }
         
         .wheel-segment {
@@ -116,7 +74,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            border: 1px solid #eee;
+        }
+        
+        .wheel-segment i {
+            position: absolute;
+            left: 65%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            font-size: 20px;
+            color: #333;
         }
         
         .wheel-segment span {
@@ -124,39 +91,25 @@
             left: 55%;
             top: 50%;
             transform: translate(-50%, -50%) rotate(45deg);
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
-            color: #ffffff;
-            text-shadow: 
-                0 0 5px #ffffff,
-                0 0 10px #ffffff;
+            color: #333;
             white-space: nowrap;
-            width: 80px;
+            width: 70px;
             text-align: center;
-        }
-        
-        .wheel-segment i {
-            position: absolute;
-            left: 70%;
-            top: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-            font-size: 18px;
-            color: #ffffff;
-            text-shadow: 0 0 10px #ffffff;
         }
         
         .pointer {
             position: absolute;
-            top: -25px;
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 40px solid #ff0066;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #ff4757;
             z-index: 10;
-            filter: drop-shadow(0 0 10px #ff0066);
         }
         
         .center-circle {
@@ -164,76 +117,40 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%);
+            width: 70px;
+            height: 70px;
+            background: #fff;
             border-radius: 50%;
-            border: 3px solid #00ffff;
+            border: 3px solid #333;
             z-index: 5;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-            overflow: hidden;
-        }
-        
-        .center-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            font-size: 28px;
         }
         
         .btn {
             display: block;
             width: 100%;
-            padding: 18px 30px;
-            font-size: 20px;
+            padding: 16px 30px;
+            font-size: 18px;
             font-weight: bold;
             color: white;
-            background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s;
             margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(255, 255, 255, 0.3),
-                transparent
-            );
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-        
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
         }
         
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 
-                0 10px 30px rgba(0, 255, 255, 0.5),
-                0 0 60px rgba(255, 0, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
         }
         
         .btn:active {
-            transform: translateY(-1px);
+            transform: translateY(0);
         }
         
         .btn:disabled {
@@ -243,20 +160,17 @@
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, #ff0066 0%, #ff00ff 100%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
         }
         
         .result {
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid #00ffff;
+            background: #f8f9fa;
+            border: 2px solid #667eea;
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             margin-top: 20px;
             text-align: center;
             display: none;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.3),
-                inset 0 0 20px rgba(0, 255, 255, 0.1);
         }
         
         .result.show {
@@ -265,379 +179,118 @@
         }
         
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .result-emoji {
-            font-size: 60px;
+            font-size: 50px;
             margin-bottom: 10px;
-            animation: bounce 1s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
         }
         
         .result-title {
-            font-size: 16px;
-            color: #00ffff;
-            margin-bottom: 5px;
-            text-shadow: 0 0 10px #00ffff;
-        }
-        
-        .result-category {
             font-size: 14px;
-            color: #ff00ff;
-            margin-bottom: 10px;
+            color: #666;
+            margin-bottom: 5px;
         }
         
         .result-name {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
-            color: #f47920;
-            margin: 15px 0;
-            text-shadow: 
-                0 0 10px #f47920,
-                0 0 20px #f47920;
-        }
-        
-        .result-score {
-            color: #00ff00;
-            font-weight: bold;
-            font-size: 18px;
-            text-shadow: 0 0 10px #00ff00;
+            color: #333;
+            margin: 10px 0;
         }
         
         .history {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 2px dashed rgba(0, 255, 255, 0.3);
+            border-top: 2px dashed #ddd;
         }
         
         .history-title {
             font-size: 14px;
-            color: #00ffff;
+            color: #666;
             margin-bottom: 10px;
-            text-shadow: 0 0 5px #00ffff;
         }
         
         .history-item {
-            background: rgba(0, 255, 255, 0.1);
+            background: #f8f9fa;
             padding: 10px 15px;
             border-radius: 8px;
             margin-bottom: 8px;
             font-size: 14px;
-            color: #fff;
-            border-left: 3px solid #ff00ff;
+            color: #333;
+            border-left: 3px solid #667eea;
         }
         
         .info {
             font-size: 12px;
-            color: rgba(0, 255, 255, 0.7);
+            color: #999;
             text-align: center;
             margin-top: 15px;
         }
-        
-        /* 音乐控制 */
-        .music-control {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 24px;
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff;
-            transition: all 0.3s;
-        }
-        
-        .music-control:hover {
-            transform: scale(1.2);
-        }
-        
-        .music-control.muted {
-            color: #ff0066;
-            text-shadow: 0 0 10px #ff0066;
-        }
-        
-        /* 装饰元素 */
-        .decoration {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #00ffff;
-            box-shadow: 0 0 10px #00ffff;
-        }
-        
-        .decoration.top-left { top: -5px; left: -5px; }
-        .decoration.top-right { top: -5px; right: -5px; }
-        .decoration.bottom-left { bottom: -5px; left: -5px; }
-        .decoration.bottom-right { bottom: -5px; right: -5px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="decoration top-left"></div>
-        <div class="decoration top-right"></div>
-        <div class="decoration bottom-left"></div>
-        <div class="decoration bottom-right"></div>
-        
-        <div class="music-control" id="musicBtn" onclick="toggleMusic()">
-            <i class="fas fa-volume-up"></i>
-        </div>
-        
-        <h1>吃嘛？</h1>
+        <h1>吃了么？</h1>
         <p class="subtitle">中关村国际孵化园附近 · 评分 4.5+ 精选</p>
         
         <div class="wheel-container">
             <div class="pointer"></div>
             <div class="wheel" id="wheel"></div>
-            <div class="center-circle" id="centerEmoji">
-                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5eGcxeW50M3Z5eGcxeW50M3Z5eGcxeW50M3Z5eGcxeW50MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0HlNQ03J5JxX6lva/giphy.gif" alt="chef">
-            </div>
+            <div class="center-circle" id="centerEmoji">🍽️</div>
         </div>
         
         <button class="btn" id="spinBtn" onclick="spinWheel()">
             <i class="fas fa-play"></i> 开始选择
         </button>
-        <button class="btn btn-secondary" id="resetBtn" onclick="spinWheel()" style="display: none;">
-            <i class="fas fa-redo"></i> 重新选择
+        <button class="btn btn-secondary" id="resetBtn" onclick="resetWheel()" style="display: none;">
+            <i class="fas fa-redo"></i> 再选一次
         </button>
         
         <div class="result" id="result">
             <div class="result-emoji" id="resultEmoji">🎉</div>
-            <div class="result-title" id="resultTitle">今天吃这个！</div>
-            <div class="result-category" id="resultCategory"></div>
+            <div class="result-title">今天吃</div>
             <div class="result-name" id="resultName"></div>
-            <div class="result-score" id="resultScore"></div>
         </div>
         
         <div class="history" id="history">
-            <div class="history-title"><i class="fas fa-history"></i> 最近选择记录</div>
+            <div class="history-title"><i class="fas fa-history"></i> 最近选择</div>
             <div id="historyList"></div>
         </div>
         
-        <p class="info">💡 最近 3 次选择的餐厅不会重复出现</p>
+        <p class="info">💡 最近 3 次选择的分类不会重复出现</p>
     </div>
 
-    <!-- 背景音乐 - 使用 Pixabay 免费音乐 -->
-    <audio id="bgMusic" loop>
-        <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=upbeat-funky-109354.mp3" type="audio/mpeg">
-    </audio>
-
     <script>
-        // 餐厅数据 - 中关村国际孵化园附近 5 公里，评分 4.5+
-        const restaurantData = [
-            {
-                category: "川菜",
-                icon: "fa-pepper-hot",
-                color: "#ff6b6b",
-                restaurants: [
-                    { name: "椒塘·中国菜", score: 4.9 },
-                    { name: "眉州东坡", score: 4.8 },
-                    { name: "绿茶餐厅", score: 4.8 },
-                    { name: "外婆家", score: 4.7 },
-                    { name: "蜀大侠火锅", score: 4.7 },
-                    { name: "小龙坎火锅", score: 4.7 },
-                    { name: "陈麻婆豆腐", score: 4.6 },
-                    { name: "川渝人家", score: 4.6 },
-                    { name: "辣府火锅", score: 4.6 },
-                    { name: "蜀九香火锅", score: 4.6 },
-                    { name: "宽板凳火锅", score: 4.5 },
-                    { name: "蜀国演义", score: 4.5 },
-                    { name: "巴蜀传香", score: 4.5 },
-                    { name: "渝信川菜", score: 4.5 },
-                    { name: "川办餐厅", score: 4.5 },
-                    { name: "小山娘川辣火锅", score: 4.8 }
-                ]
-            },
-            {
-                category: "湘菜",
-                icon: "fa-bowl-rice",
-                color: "#feca57",
-                restaurants: [
-                    { name: "人人湘", score: 4.8 },
-                    { name: "费大厨辣椒炒肉", score: 4.8 },
-                    { name: "炊烟小炒黄牛肉", score: 4.7 },
-                    { name: "壹盏灯", score: 4.7 },
-                    { name: "鲁哥饭店", score: 4.6 },
-                    { name: "湘遇", score: 4.6 },
-                    { name: "潇湘阁", score: 4.6 },
-                    { name: "九头鸟酒家", score: 4.6 },
-                    { name: "上地宴", score: 4.7 },
-                    { name: "小城外婆肴", score: 4.7 },
-                    { name: "湘菜馆", score: 4.5 },
-                    { name: "湖南味道", score: 4.5 },
-                    { name: "湘鄂情", score: 4.5 },
-                    { name: "湘味堂", score: 4.5 },
-                    { name: "辣不怕", score: 4.5 },
-                    { name: "湘聚楼", score: 4.5 }
-                ]
-            },
-            {
-                category: "日料",
-                icon: "fa-fish",
-                color: "#48dbfb",
-                restaurants: [
-                    { name: "吉川谷谷·日料自助", score: 4.9 },
-                    { name: "将太无二", score: 4.8 },
-                    { name: "松屋", score: 4.7 },
-                    { name: "元气寿司", score: 4.7 },
-                    { name: "大渔铁板烧", score: 4.7 },
-                    { name: "禾绿寿司", score: 4.6 },
-                    { name: "板前十胜", score: 4.6 },
-                    { name: "浅草屋", score: 4.6 },
-                    { name: "千代田", score: 4.6 },
-                    { name: "寿司郎", score: 4.6 },
-                    { name: "渔歌日料", score: 4.5 },
-                    { name: "樱寿司", score: 4.5 },
-                    { name: "东京料理", score: 4.5 },
-                    { name: "居酒屋", score: 4.5 },
-                    { name: "拉面道", score: 4.5 },
-                    { name: "天妇罗屋", score: 4.5 }
-                ]
-            },
-            {
-                category: "火锅",
-                icon: "fa-fire",
-                color: "#ff9ff3",
-                restaurants: [
-                    { name: "海底捞", score: 4.8 },
-                    { name: "大龙燚火锅", score: 4.7 },
-                    { name: "凑凑火锅", score: 4.7 },
-                    { name: "老北京涮肉", score: 4.7 },
-                    { name: "聚宝源", score: 4.7 },
-                    { name: "呷哺呷哺", score: 4.6 },
-                    { name: "谭鸭血火锅", score: 4.6 },
-                    { name: "珮姐老火锅", score: 4.6 },
-                    { name: "东来顺", score: 4.6 },
-                    { name: "南门涮肉", score: 4.6 },
-                    { name: "刘一手火锅", score: 4.5 },
-                    { name: "德庄火锅", score: 4.5 },
-                    { name: "小天鹅火锅", score: 4.5 },
-                    { name: "秦妈火锅", score: 4.5 },
-                    { name: "满福楼", score: 4.5 },
-                    { name: "羊大爷涮肉", score: 4.5 }
-                ]
-            },
-            {
-                category: "烧烤",
-                icon: "fa-drumstick-bite",
-                color: "#54a0ff",
-                restaurants: [
-                    { name: "木屋烧烤", score: 4.7 },
-                    { name: "丰茂烤串", score: 4.7 },
-                    { name: "胡大饭馆", score: 4.7 },
-                    { name: "很久以前羊肉串", score: 4.6 },
-                    { name: "冰城串吧", score: 4.6 },
-                    { name: "烤匠", score: 4.6 },
-                    { name: "探鱼", score: 4.6 },
-                    { name: "酒场串吧", score: 4.6 },
-                    { name: "管氏翅吧", score: 4.5 },
-                    { name: "聚点串吧", score: 4.5 },
-                    { name: "野人串吧", score: 4.5 },
-                    { name: "江边城外", score: 4.5 },
-                    { name: "诸葛烤鱼", score: 4.5 },
-                    { name: "碳烤时代", score: 4.5 },
-                    { name: "串来串去", score: 4.5 },
-                    { name: "烤天下", score: 4.5 }
-                ]
-            },
-            {
-                category: "快餐简餐",
-                icon: "fa-burger",
-                color: "#5f27cd",
-                restaurants: [
-                    { name: "喜家德水饺", score: 4.7 },
-                    { name: "老乡鸡", score: 4.7 },
-                    { name: "和府捞面", score: 4.7 },
-                    { name: "东方饺子王", score: 4.6 },
-                    { name: "大米先生", score: 4.6 },
-                    { name: "马记永", score: 4.6 },
-                    { name: "陈香贵", score: 4.6 },
-                    { name: "真功夫", score: 4.5 },
-                    { name: "永和大王", score: 4.5 },
-                    { name: "乡村基", score: 4.5 },
-                    { name: "老娘舅", score: 4.5 },
-                    { name: "吉祥馄饨", score: 4.5 },
-                    { name: "庆丰包子铺", score: 4.5 },
-                    { name: "张拉拉", score: 4.5 },
-                    { name: "遇见小面", score: 4.5 },
-                    { name: "五爷拌面", score: 4.5 }
-                ]
-            },
-            {
-                category: "西餐",
-                icon: "fa-pizza-slice",
-                color: "#00d2d3",
-                restaurants: [
-                    { name: "王品牛排", score: 4.7 },
-                    { name: "必胜客", score: 4.6 },
-                    { name: "西堤牛排", score: 4.6 },
-                    { name: "棒约翰", score: 4.6 },
-                    { name: "达美乐", score: 4.6 },
-                    { name: "德式啤酒坊", score: 4.6 },
-                    { name: "肯德基", score: 4.5 },
-                    { name: "麦当劳", score: 4.5 },
-                    { name: "汉堡王", score: 4.5 },
-                    { name: "赛百味", score: 4.5 },
-                    { name: "豪客来", score: 4.5 },
-                    { name: "绿茵阁", score: 4.5 },
-                    { name: "意式餐厅", score: 4.5 },
-                    { name: "法式小馆", score: 4.5 },
-                    { name: "美式餐厅", score: 4.5 },
-                    { name: "咖啡陪你", score: 4.5 }
-                ]
-            },
-            {
-                category: "东南亚菜",
-                icon: "fa-leaf",
-                color: "#1dd1a1",
-                restaurants: [
-                    { name: "太二酸菜鱼", score: 4.7 },
-                    { name: "椰香泰式", score: 4.6 },
-                    { name: "泰香米", score: 4.6 },
-                    { name: "迷你椰", score: 4.5 },
-                    { name: "青叶泰式", score: 4.5 },
-                    { name: "泰式小馆", score: 4.5 },
-                    { name: "越南河粉", score: 4.5 },
-                    { name: "新加坡菜", score: 4.5 },
-                    { name: "马来风光", score: 4.5 },
-                    { name: "印尼餐厅", score: 4.5 },
-                    { name: "菲律宾菜", score: 4.5 },
-                    { name: "柬埔寨菜", score: 4.5 },
-                    { name: "缅甸餐厅", score: 4.5 },
-                    { name: "老挝菜", score: 4.5 },
-                    { name: "文莱风味", score: 4.5 },
-                    { name: "东兴口岸", score: 4.5 }
-                ]
-            }
+        // 餐厅分类数据 - 8 大分类
+        const categories = [
+            { category: "川菜", icon: "fa-pepper-hot", emoji: "🌶️" },
+            { category: "湘菜", icon: "fa-bowl-rice", emoji: "🍚" },
+            { category: "日料", icon: "fa-fish", emoji: "🍣" },
+            { category: "火锅", icon: "fa-fire", emoji: "🍲" },
+            { category: "烧烤", icon: "fa-drumstick-bite", emoji: "🍢" },
+            { category: "快餐", icon: "fa-burger", emoji: "🍔" },
+            { category: "西餐", icon: "fa-pizza-slice", emoji: "🍕" },
+            { category: "东南亚", icon: "fa-leaf", emoji: "🥥" }
         ];
 
         let history = [];
         let isSpinning = false;
-        let isMusicPlaying = false;
-
-        const colors = restaurantData.map(c => c.color);
+        let currentRotation = 0;
 
         function initWheel() {
             const wheel = document.getElementById('wheel');
             wheel.innerHTML = '';
-            const segmentAngle = 360 / restaurantData.length;
+            const segmentAngle = 360 / categories.length;
             
-            restaurantData.forEach((item, index) => {
+            categories.forEach((item, index) => {
                 const segment = document.createElement('div');
                 segment.className = 'wheel-segment';
                 const rotation = index * segmentAngle - 45;
                 segment.style.transform = `rotate(${rotation}deg)`;
-                segment.style.background = `linear-gradient(135deg, ${item.color} 0%, ${item.color}cc 100%)`;
+                segment.style.background = '#ffffff';
                 
                 const icon = document.createElement('i');
                 icon.className = `fas ${item.icon}`;
@@ -645,7 +298,6 @@
                 
                 const span = document.createElement('span');
                 span.textContent = item.category;
-                span.style.color = '#ffffff';
                 segment.appendChild(span);
                 
                 wheel.appendChild(segment);
@@ -660,31 +312,25 @@
             const spinBtn = document.getElementById('spinBtn');
             const resetBtn = document.getElementById('resetBtn');
             const centerEmoji = document.getElementById('centerEmoji');
+            const result = document.getElementById('result');
             
             spinBtn.disabled = true;
+            result.classList.remove('show');
             
-            // 重置转盘旋转
+            // 重置转盘
             wheel.style.transition = 'none';
             wheel.style.transform = 'rotate(0deg)';
             
-            // 强制重绘
             setTimeout(() => {
                 wheel.style.transition = 'transform 3s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
-                
-                // 播放音乐
-                if (!isMusicPlaying) {
-                    toggleMusic();
-                }
                 
                 // 计算旋转角度
                 const extraSpins = 5 + Math.random() * 5;
                 const randomAngle = Math.random() * 360;
-                const totalRotation = extraSpins * 360 + randomAngle;
+                currentRotation = extraSpins * 360 + randomAngle;
                 
-                wheel.style.transform = `rotate(${totalRotation}deg)`;
-                
-                // 中央 GIF 动画
-                centerEmoji.innerHTML = '<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5eGcxeW50M3Z5eGcxeW50M3Z5eGcxeW50M3Z5eGcxeW50MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0HlNQ03J5JxX6lva/giphy.gif" alt="chef">';
+                wheel.style.transform = `rotate(${currentRotation}deg)`;
+                centerEmoji.textContent = '🎲';
             }, 50);
             
             setTimeout(() => {
@@ -692,64 +338,50 @@
                 spinBtn.disabled = false;
                 
                 // 计算选中的分类
-                const normalizedAngle = totalRotation % 360;
-                const segmentAngle = 360 / restaurantData.length;
-                const selectedIndex = Math.floor(((360 - normalizedAngle + 90) % 360) / segmentAngle) % restaurantData.length;
+                const normalizedAngle = currentRotation % 360;
+                const segmentAngle = 360 / categories.length;
+                const selectedIndex = Math.floor(((360 - normalizedAngle + 90) % 360) / segmentAngle) % categories.length;
                 
-                const selectedCategory = restaurantData[selectedIndex];
-                const availableRestaurants = getAvailableRestaurants(selectedCategory.restaurants);
-                const randomRestaurant = availableRestaurants[Math.floor(Math.random() * availableRestaurants.length)];
-                
-                showResult(selectedCategory, randomRestaurant);
-                addToHistory(randomRestaurant, selectedCategory.category);
+                const selectedCategory = categories[selectedIndex];
+                showResult(selectedCategory);
+                addToHistory(selectedCategory);
                 
                 spinBtn.style.display = 'none';
                 resetBtn.style.display = 'block';
+                centerEmoji.textContent = '🎉';
             }, 3000);
         }
 
-        function getAvailableRestaurants(restaurants) {
-            const lastThreeNames = history.slice(-3).map(h => h.name);
-            const available = restaurants.filter(r => !lastThreeNames.includes(r.name));
-            return available.length > 0 ? available : restaurants;
-        }
-
-        function getIconEmoji(iconName) {
-            const iconMap = {
-                'fa-pepper-hot': '🌶️',
-                'fa-bowl-rice': '🍚',
-                'fa-fish': '🐟',
-                'fa-fire': '🔥',
-                'fa-drumstick-bite': '🍗',
-                'fa-burger': '🍔',
-                'fa-pizza-slice': '🍕',
-                'fa-leaf': '🥗'
-            };
-            return iconMap[iconName] || '🍽️';
-        }
-
-        function showResult(category, restaurant) {
+        function resetWheel() {
+            const spinBtn = document.getElementById('spinBtn');
+            const resetBtn = document.getElementById('resetBtn');
             const result = document.getElementById('result');
-            const resultTitle = document.getElementById('resultTitle');
-            const resultCategory = document.getElementById('resultCategory');
-            const resultName = document.getElementById('resultName');
-            const resultScore = document.getElementById('resultScore');
-            const resultEmoji = document.getElementById('resultEmoji');
             const centerEmoji = document.getElementById('centerEmoji');
             
-            result.classList.add('show');
-            
-            resultTitle.textContent = '🎉 今天吃这个！';
-            resultCategory.textContent = `${getIconEmoji(category.icon)} ${category.category}`;
-            resultCategory.style.color = category.color;
-            resultName.textContent = restaurant.name;
-            resultScore.textContent = `⭐ ${restaurant.score}分`;
-            resultEmoji.textContent = '🍽️';
-            centerEmoji.innerHTML = '<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW96eGcxeW50M3Z5eGcxeW50M3Z5eGcxeW50M3Z5eGcxeW50MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSjRrfIPjeiVyM/giphy.gif" alt="celebration">';
+            result.classList.remove('show');
+            spinBtn.style.display = 'block';
+            resetBtn.style.display = 'none';
+            centerEmoji.textContent = '🍽️';
         }
 
-        function addToHistory(restaurant, category) {
-            history.push({ name: restaurant.name, category: category });
+        function getAvailableCategories() {
+            const lastThree = history.slice(-3).map(h => h.category);
+            const available = categories.filter(c => !lastThree.includes(c.category));
+            return available.length > 0 ? available : categories;
+        }
+
+        function showResult(category) {
+            const result = document.getElementById('result');
+            const resultName = document.getElementById('resultName');
+            const resultEmoji = document.getElementById('resultEmoji');
+            
+            resultName.textContent = `${category.emoji} ${category.category}`;
+            resultEmoji.textContent = '🎉';
+            result.classList.add('show');
+        }
+
+        function addToHistory(category) {
+            history.push({ category: category.category, emoji: category.emoji });
             if (history.length > 3) {
                 history.shift();
             }
@@ -759,25 +391,8 @@
         function updateHistory() {
             const historyList = document.getElementById('historyList');
             historyList.innerHTML = history.map((h, i) => 
-                `<div class="history-item">${i + 1}. 🍴 ${h.category} · ${h.name}</div>`
+                `<div class="history-item">${i + 1}. ${h.emoji} ${h.category}</div>`
             ).join('');
-        }
-
-        function toggleMusic() {
-            const music = document.getElementById('bgMusic');
-            const musicBtn = document.getElementById('musicBtn');
-            
-            if (isMusicPlaying) {
-                music.pause();
-                musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                musicBtn.classList.add('muted');
-            } else {
-                music.volume = 0.3;
-                music.play().catch(e => console.log('Music autoplay blocked'));
-                musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                musicBtn.classList.remove('muted');
-            }
-            isMusicPlaying = !isMusicPlaying;
         }
 
         // 初始化
