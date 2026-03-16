@@ -120,10 +120,10 @@
         
         .wheel-segment i {
             position: absolute;
-            left: 60%;
-            top: 60%;
+            left: 65%;
+            top: 50%;
             transform: translate(-50%, -50%);
-            font-size: 20px;
+            font-size: 18px;
             color: #ffffff;
             text-shadow: 0 0 10px #ffffff;
             z-index: 2;
@@ -131,16 +131,17 @@
         
         .wheel-segment span {
             position: absolute;
-            left: 60%;
-            top: 70%;
+            left: 55%;
+            top: 50%;
             transform: translate(-50%, -50%);
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             color: #ffffff;
             text-shadow: 
                 0 0 5px #ffffff,
                 0 0 10px #ffffff;
             white-space: nowrap;
+            width: 70px;
             text-align: center;
             z-index: 2;
         }
@@ -603,17 +604,19 @@
             restaurantData.forEach((item, index) => {
                 const segment = document.createElement('div');
                 segment.className = 'wheel-segment';
-                const rotation = index * segmentAngle - 45;
+                const rotation = index * segmentAngle;
                 segment.style.transform = `rotate(${rotation}deg)`;
                 segment.style.background = `linear-gradient(135deg, ${item.color} 0%, ${item.color}cc 100%)`;
                 
                 const icon = document.createElement('i');
                 icon.className = `fas ${item.icon}`;
+                icon.style.transform = `rotate(${-rotation}deg)`;
                 segment.appendChild(icon);
                 
                 const span = document.createElement('span');
                 span.textContent = item.category;
                 span.style.color = '#ffffff';
+                span.style.transform = `rotate(${-rotation}deg)`;
                 segment.appendChild(span);
                 
                 wheel.appendChild(segment);
