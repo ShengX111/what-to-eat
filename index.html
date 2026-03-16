@@ -696,14 +696,18 @@
             const resultScore = document.getElementById('resultScore');
             const resultEmoji = document.getElementById('resultEmoji');
             
+            console.log('显示结果:', category, restaurant);
+            
             result.classList.add('show');
             
-            resultTitle.textContent = '🎉 今天吃这个！';
-            resultCategory.textContent = `${category.emoji} ${category.category}`;
-            resultCategory.style.color = category.color;
-            resultName.textContent = restaurant.name;
-            resultScore.textContent = `⭐ ${restaurant.score}分`;
-            resultEmoji.textContent = '🍽️';
+            if (resultTitle) resultTitle.textContent = '🎉 今天吃这个！';
+            if (resultCategory) {
+                resultCategory.textContent = `${category.emoji} ${category.category}`;
+                resultCategory.style.color = category.color;
+            }
+            if (resultName) resultName.textContent = restaurant.name;
+            if (resultScore) resultScore.textContent = `⭐ ${restaurant.score}分`;
+            if (resultEmoji) resultEmoji.textContent = '🍽️';
         }
 
         function addToHistory(restaurant, category, emoji) {
